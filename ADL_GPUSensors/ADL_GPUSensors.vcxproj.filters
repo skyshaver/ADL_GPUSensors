@@ -23,5 +23,8 @@
     <ClInclude Include="ADL_setup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
