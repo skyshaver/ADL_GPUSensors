@@ -13,7 +13,7 @@ int PMLogDestroyD3DDevice(int adapterNumber, ADL_D3DKMT_HANDLE hDevice)
 	return ADL_OK;
 }
 
-int PMLogCreateD3DDevice(int adapterNumber, ADL_D3DKMT_HANDLE* hDevice)
+int PMLogCreateD3DDevice(int adapterNumber, ADL_D3DKMT_HANDLE* hDevice, LPAdapterInfo lpAdapterInfo)
 {
 	if (ADL_OK != ADL2_Device_PMLog_Device_Create(context, lpAdapterInfo[adapterNumber].iAdapterIndex, hDevice))
 	{
@@ -24,7 +24,7 @@ int PMLogCreateD3DDevice(int adapterNumber, ADL_D3DKMT_HANDLE* hDevice)
 	return ADL_OK;
 }
 
-int GetPMLogSupport(int adapterNumber, ADLPMLogSupportInfo* adlPMLogSupportInfo)
+int GetPMLogSupport(int adapterNumber, ADLPMLogSupportInfo* adlPMLogSupportInfo, LPAdapterInfo lpAdapterInfo)
 {
 
 	if (ADL_OK != ADL2_Adapter_PMLog_Support_Get(context, lpAdapterInfo[adapterNumber].iAdapterIndex, adlPMLogSupportInfo))
@@ -38,7 +38,7 @@ int GetPMLogSupport(int adapterNumber, ADLPMLogSupportInfo* adlPMLogSupportInfo)
 
 
 
-int PrintAllSupportedSensors(int iNumberAdapters)
+int PrintAllSupportedSensors(int iNumberAdapters, LPAdapterInfo lpAdapterInfo)
 {
 	ADLPMLogSupportInfo adlPMLogSupportInfo;
 	int  i = 0, j = 0;
@@ -48,7 +48,7 @@ int PrintAllSupportedSensors(int iNumberAdapters)
 	{
 		if (lpAdapterInfo[i].iBusNumber > -1)
 		{
-			if (GetPMLogSupport(i, &adlPMLogSupportInfo) == ADL_ERR)
+			if (GetPMLogSupport(i, &adlPMLogSupportInfo, lpAdapterInfo) == ADL_ERR)
 				return ADL_ERR;
 
 			PRINTF("Adapter number %d supported sensors:\n", i);
@@ -320,7 +320,7 @@ void DisplayPMLogOutput(ADLPMLogData* PMLogOutput, int Duration)
 }
 
 
-int PMLogAllSensorStart(int adapterNumber, int sampleRate, int Duration)
+int PMLogAllSensorStart(int adapterNumber, int sampleRate, int Duration, LPAdapterInfo lpAdapterInfo)
 {
 	ADLPMLogSupportInfo adlPMLogSupportInfo;
 	ADLPMLogStartInput adlPMLogStartInput;
@@ -330,14 +330,14 @@ int PMLogAllSensorStart(int adapterNumber, int sampleRate, int Duration)
 
 	if (hDevice == 0)
 	{
-		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice))
+		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice, lpAdapterInfo))
 		{
 			PRINTF("Err: Failed to create D3D Device, can not start PMLOG\n");
 			return ADL_ERR;
 		}
 	}
 
-	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo))
+	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo, lpAdapterInfo))
 	{
 		PRINTF("Err: Failed to get supported sensors, can not start PMLOG\n");
 		return ADL_ERR;
@@ -372,7 +372,7 @@ int PMLogAllSensorStart(int adapterNumber, int sampleRate, int Duration)
 	return ADL_OK;
 }
 
-int PMLogMclkStart(int adapterNumber, int sampleRate, int Duration)
+int PMLogMclkStart(int adapterNumber, int sampleRate, int Duration, LPAdapterInfo lpAdapterInfo)
 {
 	ADLPMLogSupportInfo adlPMLogSupportInfo;
 	ADLPMLogStartInput adlPMLogStartInput;
@@ -382,14 +382,14 @@ int PMLogMclkStart(int adapterNumber, int sampleRate, int Duration)
 
 	if (hDevice == 0)
 	{
-		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice))
+		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice, lpAdapterInfo))
 		{
 			PRINTF("Err: Failed to create D3D Device, can not start PMLOG\n");
 			return ADL_ERR;
 		}
 	}
 
-	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo))
+	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo, lpAdapterInfo))
 	{
 		PRINTF("Err: Failed to get supported sensors, can not start PMLOG\n");
 		return ADL_ERR;
@@ -424,7 +424,7 @@ int PMLogMclkStart(int adapterNumber, int sampleRate, int Duration)
 	return ADL_OK;
 }
 
-int PMLogFanStart(int adapterNumber, int sampleRate, int Duration)
+int PMLogFanStart(int adapterNumber, int sampleRate, int Duration, LPAdapterInfo lpAdapterInfo)
 {
 	ADLPMLogSupportInfo adlPMLogSupportInfo;
 	ADLPMLogStartInput adlPMLogStartInput;
@@ -434,14 +434,14 @@ int PMLogFanStart(int adapterNumber, int sampleRate, int Duration)
 
 	if (hDevice == 0)
 	{
-		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice))
+		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice, lpAdapterInfo))
 		{
 			PRINTF("Err: Failed to create D3D Device, can not start PMLOG\n");
 			return ADL_ERR;
 		}
 	}
 
-	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo))
+	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo, lpAdapterInfo))
 	{
 		PRINTF("Err: Failed to get supported sensors, can not start PMLOG\n");
 		return ADL_ERR;
@@ -474,7 +474,7 @@ int PMLogFanStart(int adapterNumber, int sampleRate, int Duration)
 	return ADL_OK;
 }
 
-int PMLogGfxClkStart(int adapterNumber, int sampleRate, int Duration)
+int PMLogGfxClkStart(int adapterNumber, int sampleRate, int Duration, LPAdapterInfo lpAdapterInfo)
 {
 	ADLPMLogSupportInfo adlPMLogSupportInfo;
 	ADLPMLogStartInput adlPMLogStartInput;
@@ -484,14 +484,14 @@ int PMLogGfxClkStart(int adapterNumber, int sampleRate, int Duration)
 
 	if (hDevice == 0)
 	{
-		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice))
+		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice, lpAdapterInfo))
 		{
 			PRINTF("Err: Failed to create D3D Device, can not start PMLOG\n");
 			return ADL_ERR;
 		}
 	}
 
-	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo))
+	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo, lpAdapterInfo))
 	{
 		PRINTF("Err: Failed to get supported sensors, can not start PMLOG\n");
 		return ADL_ERR;

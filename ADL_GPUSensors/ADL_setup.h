@@ -24,23 +24,24 @@ typedef int (*ADL2_ADAPTER_ACTIVE_GET) (ADL_CONTEXT_HANDLE, int, int*);
 
 typedef int (*ADL_ADAPTER_NUMBEROFADAPTERS_GET) (int*);
 typedef int (*ADL_ADAPTER_ADAPTERINFO_GET) (LPAdapterInfo, int);
-typedef int(*ADL2_ADAPTER_PMLOG_SUPPORT_GET) (ADL_CONTEXT_HANDLE context, int iAdapterIndex, ADLPMLogSupportInfo* pPMLogSupportInfo);
-typedef int(*ADL2_ADAPTER_PMLOG_SUPPORT_START) (ADL_CONTEXT_HANDLE context, int iAdapterIndex, ADLPMLogStartInput* pPMLogStartInput, ADLPMLogStartOutput* pPMLogStartOutput, ADL_D3DKMT_HANDLE pDevice);
-typedef int(*ADL2_ADAPTER_PMLOG_SUPPORT_STOP) (ADL_CONTEXT_HANDLE context, int iAdapterIndex, ADL_D3DKMT_HANDLE pDevice);
-typedef int(*ADL2_DEVICE_PMLOG_DEVICE_CREATE) (ADL_CONTEXT_HANDLE context, int iAdapterIndex, ADL_D3DKMT_HANDLE* pDevice);
-typedef int(*ADL2_DEVICE_PMLOG_DEVICE_DESTROY) (ADL_CONTEXT_HANDLE context, ADL_D3DKMT_HANDLE hDevice);
+typedef int (*ADL2_ADAPTER_PMLOG_SUPPORT_GET) (ADL_CONTEXT_HANDLE context, int iAdapterIndex, ADLPMLogSupportInfo* pPMLogSupportInfo);
+typedef int (*ADL2_ADAPTER_PMLOG_SUPPORT_START) (ADL_CONTEXT_HANDLE context, int iAdapterIndex, ADLPMLogStartInput* pPMLogStartInput, ADLPMLogStartOutput* pPMLogStartOutput, ADL_D3DKMT_HANDLE pDevice);
+typedef int (*ADL2_ADAPTER_PMLOG_SUPPORT_STOP) (ADL_CONTEXT_HANDLE context, int iAdapterIndex, ADL_D3DKMT_HANDLE pDevice);
+typedef int (*ADL2_DEVICE_PMLOG_DEVICE_CREATE) (ADL_CONTEXT_HANDLE context, int iAdapterIndex, ADL_D3DKMT_HANDLE* pDevice);
+typedef int (*ADL2_DEVICE_PMLOG_DEVICE_DESTROY) (ADL_CONTEXT_HANDLE context, ADL_D3DKMT_HANDLE hDevice);
 
 
-ADL_MAIN_CONTROL_CREATE          ADL_Main_Control_Create = NULL;
-ADL_MAIN_CONTROL_DESTROY         ADL_Main_Control_Destroy = NULL;
-ADL_ADAPTER_NUMBEROFADAPTERS_GET ADL_Adapter_NumberOfAdapters_Get = NULL;
-ADL_ADAPTER_ADAPTERINFO_GET      ADL_Adapter_AdapterInfo_Get = NULL;
+ADL_MAIN_CONTROL_CREATE				ADL_Main_Control_Create = NULL;
+ADL_MAIN_CONTROL_DESTROY			ADL_Main_Control_Destroy = NULL;
+ADL_ADAPTER_NUMBEROFADAPTERS_GET	ADL_Adapter_NumberOfAdapters_Get = NULL;
+ADL_ADAPTER_ADAPTERINFO_GET			ADL_Adapter_AdapterInfo_Get = NULL;
 ADL2_ADAPTER_ACTIVE_GET				ADL2_Adapter_Active_Get = NULL;
-ADL2_ADAPTER_PMLOG_SUPPORT_GET ADL2_Adapter_PMLog_Support_Get = NULL;
-ADL2_ADAPTER_PMLOG_SUPPORT_START ADL2_Adapter_PMLog_Support_Start = NULL;
-ADL2_ADAPTER_PMLOG_SUPPORT_STOP ADL2_Adapter_PMLog_Support_Stop = NULL;
-ADL2_DEVICE_PMLOG_DEVICE_CREATE ADL2_Device_PMLog_Device_Create = NULL;
-ADL2_DEVICE_PMLOG_DEVICE_DESTROY ADL2_Device_PMLog_Device_Destroy = NULL;
+ADL2_ADAPTER_PMLOG_SUPPORT_GET		ADL2_Adapter_PMLog_Support_Get = NULL;
+ADL2_ADAPTER_PMLOG_SUPPORT_START	ADL2_Adapter_PMLog_Support_Start = NULL;
+ADL2_ADAPTER_PMLOG_SUPPORT_STOP		ADL2_Adapter_PMLog_Support_Stop = NULL;
+ADL2_DEVICE_PMLOG_DEVICE_CREATE		ADL2_Device_PMLog_Device_Create = NULL;
+ADL2_DEVICE_PMLOG_DEVICE_DESTROY	ADL2_Device_PMLog_Device_Destroy = NULL;
+
 // Memory allocation function
 void* __stdcall ADL_Main_Memory_Alloc(int iSize)
 {
@@ -61,10 +62,10 @@ void __stdcall ADL_Main_Memory_Free(void** lpBuffer)
 ADL_CONTEXT_HANDLE context = NULL;
 ADL_D3DKMT_HANDLE hDevice = 0;
 
-LPAdapterInfo   lpAdapterInfo = NULL;
+// LPAdapterInfo   lpAdapterInfo = nullptr; // moved to main() scope
 HINSTANCE hDLL;
 
-// int  iNumberAdapters;
+// int  iNumberAdapters; // moved to main() scope
 
 int initializeADL()
 {
@@ -83,6 +84,7 @@ int initializeADL()
 		PRINTF("Failed to load ADL library\n");
 		return FALSE;
 	}
+
 	ADL_Main_Control_Create = (ADL_MAIN_CONTROL_CREATE)GetProcAddress(hDLL, "ADL_Main_Control_Create");
 	ADL_Main_Control_Destroy = (ADL_MAIN_CONTROL_DESTROY)GetProcAddress(hDLL, "ADL_Main_Control_Destroy");
 	ADL_Adapter_NumberOfAdapters_Get = (ADL_ADAPTER_NUMBEROFADAPTERS_GET)GetProcAddress(hDLL, "ADL_Adapter_NumberOfAdapters_Get");
@@ -93,6 +95,7 @@ int initializeADL()
 	ADL2_Adapter_PMLog_Support_Stop = (ADL2_ADAPTER_PMLOG_SUPPORT_STOP)GetProcAddress(hDLL, "ADL2_Adapter_PMLog_Stop");
 	ADL2_Device_PMLog_Device_Create = (ADL2_DEVICE_PMLOG_DEVICE_CREATE)GetProcAddress(hDLL, "ADL2_Device_PMLog_Device_Create");
 	ADL2_Device_PMLog_Device_Destroy = (ADL2_DEVICE_PMLOG_DEVICE_DESTROY)GetProcAddress(hDLL, "ADL2_Device_PMLog_Device_Destroy");
+
 	if (NULL == ADL_Main_Control_Create ||
 		NULL == ADL_Main_Control_Destroy ||
 		NULL == ADL_Adapter_NumberOfAdapters_Get ||
