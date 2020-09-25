@@ -6,7 +6,7 @@ int PMLogDestroyD3DDevice(int adapterNumber, ADL_D3DKMT_HANDLE hDevice)
 {
 	if (ADL_OK != ADL2_Device_PMLog_Device_Destroy(context, hDevice))
 	{
-		PRINTF("Err: Failed to destory D3D device\n");
+		fmt::print(stderr, "Err: Failed to destory D3D device\n");
 		return ADL_ERR;
 	}
 
@@ -17,7 +17,7 @@ int PMLogCreateD3DDevice(int adapterNumber, ADL_D3DKMT_HANDLE* hDevice, LPAdapte
 {
 	if (ADL_OK != ADL2_Device_PMLog_Device_Create(context, lpAdapterInfo[adapterNumber].iAdapterIndex, hDevice))
 	{
-		PRINTF("Err: Failed to create D3D device\n");
+		fmt::print(stderr, "Err: Failed to create D3D device\n");
 		return ADL_ERR;
 	}
 
@@ -29,7 +29,7 @@ int GetPMLogSupport(int adapterNumber, ADLPMLogSupportInfo* adlPMLogSupportInfo,
 
 	if (ADL_OK != ADL2_Adapter_PMLog_Support_Get(context, lpAdapterInfo[adapterNumber].iAdapterIndex, adlPMLogSupportInfo))
 	{
-		PRINTF("Err: Failed to get PMLog Support for adapter number: %d\n", adapterNumber);
+		fmt::print(stderr, "Err: Failed to get PMLog Support for adapter number: {}\n", adapterNumber);
 		return ADL_ERR;
 	}
 
@@ -51,125 +51,125 @@ int PrintAllSupportedSensors(int iNumberAdapters, LPAdapterInfo lpAdapterInfo)
 			if (GetPMLogSupport(i, &adlPMLogSupportInfo, lpAdapterInfo) == ADL_ERR)
 				return ADL_ERR;
 
-			PRINTF("Adapter number %d supported sensors:\n", i);
+			fmt::print("Adapter number %d supported sensors:\n", i);
 			while (adlPMLogSupportInfo.usSensors[j] != ADL_SENSOR_MAXTYPES)
 			{
 
 				switch (adlPMLogSupportInfo.usSensors[j])
 				{
 				case ADL_PMLOG_CLK_GFXCLK:
-					PRINTF("Graphics Clock Sensor Detected\n");
+					fmt::print("Graphics Clock Sensor Detected\n");
 					break;
 				case ADL_PMLOG_CLK_MEMCLK:
-					PRINTF("Memory Clock Sensor Detected\n");
+					fmt::print("Memory Clock Sensor Detected\n");
 					break;
 				case ADL_PMLOG_CLK_SOCCLK:
-					PRINTF("SOC Clock Sensor Detected\n");
+					fmt::print("SOC Clock Sensor Detected\n");
 					break;
 				case ADL_PMLOG_CLK_UVDCLK1:
-					PRINTF("UVD1 Clock Sensor Detected\n");
+					fmt::print("UVD1 Clock Sensor Detected\n");
 					break;
 				case ADL_PMLOG_CLK_UVDCLK2:
-					PRINTF("UVD2 Clock Sensor Detected\n");
+					fmt::print("UVD2 Clock Sensor Detected\n");
 					break;
 				case ADL_PMLOG_CLK_VCECLK:
-					PRINTF("VCE Clock Sensor Detected\n");
+					fmt::print("VCE Clock Sensor Detected\n");
 					break;
 				case ADL_PMLOG_CLK_VCNCLK:
-					PRINTF("VCN Clock Sensor Detected\n");
+					fmt::print("VCN Clock Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_EDGE:
-					PRINTF("EDGE Temperature Sensor Detected\n");
+					fmt::print("EDGE Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_MEM:
-					PRINTF("Memory Temperature Sensor Detected\n");
+					fmt::print("Memory Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_VRVDDC:
-					PRINTF("VDDC VR Temperature Sensor Detected\n");
+					fmt::print("VDDC VR Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_VRSOC:
-					PRINTF("SOC VR Temperature Sensor Detected\n");
+					fmt::print("SOC VR Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_VRMVDD:
-					PRINTF("MVDD VR Temperature Sensor Detected\n");
+					fmt::print("MVDD VR Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_VRMVDD0:
-					PRINTF("MVDD0 VR Temperature Sensor Detected\n");
+					fmt::print("MVDD0 VR Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_VRMVDD1:
-					PRINTF("MVDD1 VR Temperature Sensor Detected\n");
+					fmt::print("MVDD1 VR Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_LIQUID:
-					PRINTF("Liquid Temperature Sensor Detected\n");
+					fmt::print("Liquid Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_PLX:
-					PRINTF("PLX Temperature Sensor Detected\n");
+					fmt::print("PLX Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_FAN_RPM:
-					PRINTF("Fan RPM Sensor Detected\n");
+					fmt::print("Fan RPM Sensor Detected\n");
 					break;
 				case ADL_PMLOG_FAN_PERCENTAGE:
-					PRINTF("Fan Percentage Sensor Detected\n");
+					fmt::print("Fan Percentage Sensor Detected\n");
 					break;
 				case ADL_PMLOG_SOC_VOLTAGE:
-					PRINTF("SOC Voltage Sensor Detected\n");
+					fmt::print("SOC Voltage Sensor Detected\n");
 					break;
 				case ADL_PMLOG_SOC_POWER:
-					PRINTF("SOC Power Sensor Detected\n");
+					fmt::print("SOC Power Sensor Detected\n");
 					break;
 				case ADL_PMLOG_SOC_CURRENT:
-					PRINTF("SOC Current Sensor Detected\n");
+					fmt::print("SOC Current Sensor Detected\n");
 					break;
 				case ADL_PMLOG_INFO_ACTIVITY_GFX:
-					PRINTF("GFX Activity Sensor Detected\n");
+					fmt::print("GFX Activity Sensor Detected\n");
 					break;
 				case ADL_PMLOG_INFO_ACTIVITY_MEM:
-					PRINTF("MEM Activity Sensor Detected\n");
+					fmt::print("MEM Activity Sensor Detected\n");
 					break;
 				case ADL_PMLOG_GFX_VOLTAGE:
-					PRINTF("GFX Voltage Sensor Detected\n");
+					fmt::print("GFX Voltage Sensor Detected\n");
 					break;
 				case ADL_PMLOG_MEM_VOLTAGE:
-					PRINTF("MEM Voltage Sensor Detected\n");
+					fmt::print("MEM Voltage Sensor Detected\n");
 					break;
 				case ADL_PMLOG_ASIC_POWER:
-					PRINTF("Asic Power Sensor Detected\n");
+					fmt::print("Asic Power Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_HOTSPOT:
-					PRINTF("HOTSPOT Temperature Sensor Detected\n");
+					fmt::print("HOTSPOT Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_GFX:
-					PRINTF("GFX Temperature Sensor Detected\n");
+					fmt::print("GFX Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_SOC:
-					PRINTF("SOC Temperature Sensor Detected\n");
+					fmt::print("SOC Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_TEMPERATURE_CPU:
-					PRINTF("CPU Temperature Sensor Detected\n");
+					fmt::print("CPU Temperature Sensor Detected\n");
 					break;
 				case ADL_PMLOG_GFX_POWER:
-					PRINTF("GFX Power Sensor Detected\n");
+					fmt::print("GFX Power Sensor Detected\n");
 					break;
 				case ADL_PMLOG_GFX_CURRENT:
-					PRINTF("GFX Current Sensor Detected\n");
+					fmt::print("GFX Current Sensor Detected\n");
 					break;
 				case ADL_PMLOG_CPU_POWER:
-					PRINTF("CPU Power Sensor Detected\n");
+					fmt::print("CPU Power Sensor Detected\n");
 					break;
 				case ADL_PMLOG_CLK_CPUCLK:
-					PRINTF("CPU Clock Sensor Detected\n");
+					fmt::print("CPU Clock Sensor Detected\n");
 					break;
 				case ADL_PMLOG_THROTTLER_STATUS:
-					PRINTF("Throttler Status Sensor Detected\n");
+					fmt::print("Throttler Status Sensor Detected\n");
 					break;
 				case ADL_SENSOR_MAXTYPES:
-					PRINTF("End of Sensor Detected\n");
+					fmt::print("End of Sensor Detected\n");
 					break;
 				default:
-					PRINTF("ER: Uknown sensor detected\n");
+					fmt::print("ER: Uknown sensor detected\n");
 					break;
 				}
-				PRINTF("ID: %d\n", adlPMLogSupportInfo.usSensors[j]);
+				fmt::print("ID: %d\n", adlPMLogSupportInfo.usSensors[j]);
 				j++;
 			}
 
@@ -197,118 +197,118 @@ void DisplayPMLogOutput(ADLPMLogData* PMLogOutput, int Duration)
 			switch (PMLogOutput->ulValues[i][0])
 			{
 			case ADL_PMLOG_CLK_GFXCLK:
-				PRINTF("Graphics Clock Sensor: ");
+				fmt::print("Graphics Clock Sensor: ");
 				break;
 			case ADL_PMLOG_CLK_MEMCLK:
-				PRINTF("Memory Clock Sensor: ");
+				fmt::print("Memory Clock Sensor: ");
 				break;
 			case ADL_PMLOG_CLK_SOCCLK:
-				PRINTF("SOC Clock Sensor: ");
+				fmt::print("SOC Clock Sensor: ");
 				break;
 			case ADL_PMLOG_CLK_UVDCLK1:
-				PRINTF("UVD1 Clock Sensor: ");
+				fmt::print("UVD1 Clock Sensor: ");
 				break;
 			case ADL_PMLOG_CLK_UVDCLK2:
-				PRINTF("UVD2 Clock Sensor: ");
+				fmt::print("UVD2 Clock Sensor: ");
 				break;
 			case ADL_PMLOG_CLK_VCECLK:
-				PRINTF("VCE Clock Sensor: ");
+				fmt::print("VCE Clock Sensor: ");
 				break;
 			case ADL_PMLOG_CLK_VCNCLK:
-				PRINTF("VCN Clock Sensor: ");
+				fmt::print("VCN Clock Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_EDGE:
-				PRINTF("EDGE Temperature Sensor: ");
+				fmt::print("EDGE Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_MEM:
-				PRINTF("Memory Temperature Sensor: ");
+				fmt::print("Memory Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_VRVDDC:
-				PRINTF("VDDC VR Temperature Sensor: ");
+				fmt::print("VDDC VR Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_VRSOC:
-				PRINTF("SOC VR Temperature Sensor: ");
+				fmt::print("SOC VR Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_VRMVDD:
-				PRINTF("MVDD VR Temperature Sensor: ");
+				fmt::print("MVDD VR Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_VRMVDD0:
-				PRINTF("MVDD0 VR Temperature Sensor: ");
+				fmt::print("MVDD0 VR Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_VRMVDD1:
-				PRINTF("MVDD1 VR Temperature Sensor: ");
+				fmt::print("MVDD1 VR Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_LIQUID:
-				PRINTF("Liquid Temperature Sensor: ");
+				fmt::print("Liquid Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_PLX:
-				PRINTF("PLX Temperature Sensor: ");
+				fmt::print("PLX Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_FAN_RPM:
-				PRINTF("Fan RPM Sensor: ");
+				fmt::print("Fan RPM Sensor: ");
 				break;
 			case ADL_PMLOG_FAN_PERCENTAGE:
-				PRINTF("Fan Percentage Sensor: ");
+				fmt::print("Fan Percentage Sensor: ");
 				break;
 			case ADL_PMLOG_SOC_VOLTAGE:
-				PRINTF("SOC Voltage Sensor: ");
+				fmt::print("SOC Voltage Sensor: ");
 				break;
 			case ADL_PMLOG_SOC_POWER:
-				PRINTF("SOC Power Sensor: ");
+				fmt::print("SOC Power Sensor: ");
 				break;
 			case ADL_PMLOG_SOC_CURRENT:
-				PRINTF("SOC Current Sensor: ");
+				fmt::print("SOC Current Sensor: ");
 				break;
 			case ADL_PMLOG_INFO_ACTIVITY_GFX:
-				PRINTF("GFX Activity Sensor: ");
+				fmt::print("GFX Activity Sensor: ");
 				break;
 			case ADL_PMLOG_INFO_ACTIVITY_MEM:
-				PRINTF("MEM Activity Sensor: ");
+				fmt::print("MEM Activity Sensor: ");
 				break;
 			case ADL_PMLOG_GFX_VOLTAGE:
-				PRINTF("GFX Voltage Sensor: ");
+				fmt::print("GFX Voltage Sensor: ");
 				break;
 			case ADL_PMLOG_MEM_VOLTAGE:
-				PRINTF("MEM Voltage Sensor: ");
+				fmt::print("MEM Voltage Sensor: ");
 				break;
 			case ADL_PMLOG_ASIC_POWER:
-				PRINTF("Asic Power Sensor: ");
+				fmt::print("Asic Power Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_HOTSPOT:
-				PRINTF("HOTSPOT Temperature Sensor: ");
+				fmt::print("HOTSPOT Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_GFX:
-				PRINTF("GFX Temperature Sensor: ");
+				fmt::print("GFX Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_SOC:
-				PRINTF("SOC Temperature Sensor: ");
+				fmt::print("SOC Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_TEMPERATURE_CPU:
-				PRINTF("CPU Temperature Sensor: ");
+				fmt::print("CPU Temperature Sensor: ");
 				break;
 			case ADL_PMLOG_GFX_POWER:
-				PRINTF("GFX Power Sensor: ");
+				fmt::print("GFX Power Sensor: ");
 				break;
 			case ADL_PMLOG_GFX_CURRENT:
-				PRINTF("GFX Current Sensor: ");
+				fmt::print("GFX Current Sensor: ");
 				break;
 			case ADL_PMLOG_CPU_POWER:
-				PRINTF("CPU Power Sensor: ");
+				fmt::print("CPU Power Sensor: ");
 				break;
 			case ADL_PMLOG_CLK_CPUCLK:
-				PRINTF("CPU Clock Sensor: ");
+				fmt::print("CPU Clock Sensor: ");
 				break;
 			case ADL_PMLOG_THROTTLER_STATUS:
-				PRINTF("Throttler Status Sensor: ");
+				fmt::print("Throttler Status Sensor: ");
 				break;
 			case ADL_SENSOR_MAXTYPES:
 				break;
 			default:
-				PRINTF("Unknown Sensor Value: ");
+				fmt::print("Unknown Sensor Value: ");
 				break;
 			}
 
-			PRINTF("%d\n", PMLogOutput->ulValues[i][1]);
+			fmt::print("{}\n", PMLogOutput->ulValues[i][1]);
 			i++;
 		}
 
@@ -332,14 +332,14 @@ int PMLogAllSensorStart(int adapterNumber, int sampleRate, int Duration, LPAdapt
 	{
 		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice, lpAdapterInfo))
 		{
-			PRINTF("Err: Failed to create D3D Device, can not start PMLOG\n");
+			fmt::print(stderr, "Err: Failed to create D3D Device, can not start PMLOG\n");
 			return ADL_ERR;
 		}
 	}
 
 	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo, lpAdapterInfo))
 	{
-		PRINTF("Err: Failed to get supported sensors, can not start PMLOG\n");
+		fmt::print(stderr, "Err: Failed to get supported sensors, can not start PMLOG\n");
 		return ADL_ERR;
 	}
 
@@ -354,7 +354,7 @@ int PMLogAllSensorStart(int adapterNumber, int sampleRate, int Duration, LPAdapt
 	adlPMLogStartInput.ulSampleRate = sampleRate;
 	if (ADL_OK != ADL2_Adapter_PMLog_Support_Start(context, lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogStartInput, &adlPMLogStartOutput, hDevice))
 	{
-		PRINTF("Failed to start PMLOG\n");
+		fmt::print(stderr, "Failed to start PMLOG\n");
 		return ADL_ERR;
 	}
 
@@ -365,7 +365,7 @@ int PMLogAllSensorStart(int adapterNumber, int sampleRate, int Duration, LPAdapt
 
 	if (ADL_OK != ADL2_Adapter_PMLog_Support_Stop(context, lpAdapterInfo[adapterNumber].iAdapterIndex, hDevice))
 	{
-		PRINTF("Failed to get PMLog Support\n");
+		fmt::print(stderr, "Failed to get PMLog Support\n");
 		return ADL_ERR;
 	}
 
@@ -384,14 +384,14 @@ int PMLogMclkStart(int adapterNumber, int sampleRate, int Duration, LPAdapterInf
 	{
 		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice, lpAdapterInfo))
 		{
-			PRINTF("Err: Failed to create D3D Device, can not start PMLOG\n");
+			fmt::print(stderr, "Err: Failed to create D3D Device, can not start PMLOG\n");
 			return ADL_ERR;
 		}
 	}
 
 	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo, lpAdapterInfo))
 	{
-		PRINTF("Err: Failed to get supported sensors, can not start PMLOG\n");
+		fmt::print(stderr, "Err: Failed to get supported sensors, can not start PMLOG\n");
 		return ADL_ERR;
 	}
 
@@ -402,11 +402,11 @@ int PMLogMclkStart(int adapterNumber, int sampleRate, int Duration, LPAdapterInf
 	adlPMLogStartInput.usSensors[1] = ADL_SENSOR_MAXTYPES;
 	adlPMLogStartInput.ulSampleRate = sampleRate;
 
-	PRINTF("Start MCLK PMGLOG\n");
+	fmt::print("Start MCLK PMGLOG\n");
 
 	if (ADL_OK != ADL2_Adapter_PMLog_Support_Start(context, lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogStartInput, &adlPMLogStartOutput, hDevice))
 	{
-		PRINTF("Failed to start MCLK PMGLOG\n");
+		fmt::print(stderr, "Failed to start MCLK PMGLOG\n");
 		return ADL_ERR;
 	}
 
@@ -417,7 +417,7 @@ int PMLogMclkStart(int adapterNumber, int sampleRate, int Duration, LPAdapterInf
 
 	if (ADL_OK != ADL2_Adapter_PMLog_Support_Stop(context, lpAdapterInfo[adapterNumber].iAdapterIndex, hDevice))
 	{
-		PRINTF("Failed to get PMLog Support\n");
+		fmt::print(stderr, "Failed to get PMLog Support\n");
 		return ADL_ERR;
 	}
 
@@ -436,14 +436,14 @@ int PMLogFanStart(int adapterNumber, int sampleRate, int Duration, LPAdapterInfo
 	{
 		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice, lpAdapterInfo))
 		{
-			PRINTF("Err: Failed to create D3D Device, can not start PMLOG\n");
+			fmt::print(stderr, "Err: Failed to create D3D Device, can not start PMLOG\n");
 			return ADL_ERR;
 		}
 	}
 
 	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo, lpAdapterInfo))
 	{
-		PRINTF("Err: Failed to get supported sensors, can not start PMLOG\n");
+		fmt::print(stderr, "Err: Failed to get supported sensors, can not start PMLOG\n");
 		return ADL_ERR;
 	}
 
@@ -456,7 +456,7 @@ int PMLogFanStart(int adapterNumber, int sampleRate, int Duration, LPAdapterInfo
 
 	if (ADL_OK != ADL2_Adapter_PMLog_Support_Start(context, lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogStartInput, &adlPMLogStartOutput, hDevice))
 	{
-		PRINTF("Failed to start MCLK PMGLOG\n");
+		fmt::print(stderr, "Failed to start MCLK PMGLOG\n");
 		return ADL_ERR;
 	}
 
@@ -467,7 +467,7 @@ int PMLogFanStart(int adapterNumber, int sampleRate, int Duration, LPAdapterInfo
 
 	if (ADL_OK != ADL2_Adapter_PMLog_Support_Stop(context, lpAdapterInfo[adapterNumber].iAdapterIndex, hDevice))
 	{
-		PRINTF("Failed to get PMLog Support\n");
+		fmt::print(stderr, "Failed to get PMLog Support\n");
 		return ADL_ERR;
 	}
 
@@ -486,14 +486,14 @@ int PMLogGfxClkStart(int adapterNumber, int sampleRate, int Duration, LPAdapterI
 	{
 		if (ADL_OK != PMLogCreateD3DDevice(lpAdapterInfo[adapterNumber].iAdapterIndex, &hDevice, lpAdapterInfo))
 		{
-			PRINTF("Err: Failed to create D3D Device, can not start PMLOG\n");
+			fmt::print(stderr, "Err: Failed to create D3D Device, can not start PMLOG\n");
 			return ADL_ERR;
 		}
 	}
 
 	if (ADL_OK != GetPMLogSupport(lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogSupportInfo, lpAdapterInfo))
 	{
-		PRINTF("Err: Failed to get supported sensors, can not start PMLOG\n");
+		fmt::print(stderr, "Err: Failed to get supported sensors, can not start PMLOG\n");
 		return ADL_ERR;
 	}
 
@@ -504,7 +504,7 @@ int PMLogGfxClkStart(int adapterNumber, int sampleRate, int Duration, LPAdapterI
 
 	if (ADL_OK != ADL2_Adapter_PMLog_Support_Start(context, lpAdapterInfo[adapterNumber].iAdapterIndex, &adlPMLogStartInput, &adlPMLogStartOutput, hDevice))
 	{
-		PRINTF("Failed to start MCLK PMGLOG\n");
+		fmt::print(stderr, "Failed to start MCLK PMGLOG\n");
 		return ADL_ERR;
 	}
 
@@ -515,7 +515,7 @@ int PMLogGfxClkStart(int adapterNumber, int sampleRate, int Duration, LPAdapterI
 
 	if (ADL_OK != ADL2_Adapter_PMLog_Support_Stop(context, lpAdapterInfo[adapterNumber].iAdapterIndex, hDevice))
 	{
-		PRINTF("Failed to get PMLog Support\n");
+		fmt::print(stderr, "Failed to get PMLog Support\n");
 		return ADL_ERR;
 	}
 
@@ -528,9 +528,6 @@ int parseCLArgs(int argc, char** argv, int iNumberAdapters, LPAdapterInfo lpAdap
 	int result = 0;
 	if (argc >= 1)
 	{
-
-
-
 		switch (*(argv[1]))
 		{
 		case 'l':
@@ -540,36 +537,36 @@ int parseCLArgs(int argc, char** argv, int iNumberAdapters, LPAdapterInfo lpAdap
 			if (argc == 5)
 				PMLogAllSensorStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
 			else
-				printf("signature of PMLog all sensors (PMLog.exe s X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
+				fmt::print("signature of PMLog all sensors (PMLog.exe s X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log in s");
 			break;
 		case 'm':
 			if (argc == 5)
 				PMLogMclkStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
 			else
-				printf("signature of PMLog MCLK sensor (PMLog.exe m X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
+				fmt::print("signature of PMLog MCLK sensor (PMLog.exe m X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log in s");
 			break;
 		case 'f':
 			if (argc == 5)
 				PMLogFanStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
 			else
-				printf("signature of PMLog fan sensor (PMLog.exe f X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
+				fmt::print("signature of PMLog fan sensor (PMLog.exe f X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log in s");
 			break;
 		case 'g':
 			if (argc == 5)
 				PMLogGfxClkStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
 			else
-				printf("signature of PMLog GFX clock sensor (PMLog.exe g X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
+				fmt::print("signature of PMLog GFX clock sensor (PMLog.exe g X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log in s");
 			break;
 
 		default:
-			printf("Available command line parameters: l- List All sensors, s-start log all sensors, m-start log MCLK sensor, f-start fan sensor, g-start GFX clock sensor\n");
+			fmt::print("Available command line parameters: l- List All sensors, s-start log all sensors, m-start log MCLK sensor, f-start fan sensor, g-start GFX clock sensor\n");
 
 			break;
 		}
 	}
 	else
 	{
-		printf("Available command line parameters: l- List All sensors, s-start log all sensors, m-start log MCLK sensor, f-start fan sensor, g-start GFX clock sensor\n");
+		fmt::print("Available command line parameters: l- List All sensors, s-start log all sensors, m-start log MCLK sensor, f-start fan sensor, g-start GFX clock sensor\n");
 	}
 
 	return result;

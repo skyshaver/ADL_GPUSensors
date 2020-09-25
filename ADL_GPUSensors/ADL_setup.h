@@ -9,12 +9,8 @@
 #include "adl_structures.h"
 #include "adl_defines.h"
 
+#include <fmt/core.h>
 
-#include <cstdio>
-
-// Comment out one of the two lines below to allow or supress diagnostic messages
-// #define PRINTF
-#define PRINTF printf
 
 // Definitions of the used function pointers. Add more if you use other ADL APIs
 typedef int (*ADL_MAIN_CONTROL_CREATE)(ADL_MAIN_MALLOC_CALLBACK, int);
@@ -81,7 +77,7 @@ int initializeADL()
 
 	if (NULL == hDLL)
 	{
-		PRINTF("Failed to load ADL library\n");
+		fmt::print(stderr, "Failed to load ADL library\n");
 		return FALSE;
 	}
 
@@ -96,25 +92,25 @@ int initializeADL()
 	ADL2_Device_PMLog_Device_Create = (ADL2_DEVICE_PMLOG_DEVICE_CREATE)GetProcAddress(hDLL, "ADL2_Device_PMLog_Device_Create");
 	ADL2_Device_PMLog_Device_Destroy = (ADL2_DEVICE_PMLOG_DEVICE_DESTROY)GetProcAddress(hDLL, "ADL2_Device_PMLog_Device_Destroy");
 
-	if (NULL == ADL_Main_Control_Create ||
-		NULL == ADL_Main_Control_Destroy ||
-		NULL == ADL_Adapter_NumberOfAdapters_Get ||
-		NULL == ADL_Adapter_AdapterInfo_Get ||
-		NULL == ADL2_Adapter_Active_Get ||
-		NULL == ADL2_Adapter_PMLog_Support_Get ||
-		NULL == ADL2_Adapter_PMLog_Support_Start ||
-		NULL == ADL2_Adapter_PMLog_Support_Stop ||
-		NULL == ADL2_Device_PMLog_Device_Create ||
-		NULL == ADL2_Device_PMLog_Device_Destroy
+	if ( ADL_Main_Control_Create			== nullptr ||
+		 ADL_Main_Control_Destroy			== nullptr ||
+		 ADL_Adapter_NumberOfAdapters_Get	== nullptr ||
+		 ADL_Adapter_AdapterInfo_Get		== nullptr ||
+		 ADL2_Adapter_Active_Get			== nullptr ||
+		 ADL2_Adapter_PMLog_Support_Get		== nullptr ||
+		 ADL2_Adapter_PMLog_Support_Start	== nullptr ||
+		 ADL2_Adapter_PMLog_Support_Stop	== nullptr ||
+		 ADL2_Device_PMLog_Device_Create	== nullptr ||
+		 ADL2_Device_PMLog_Device_Destroy	== nullptr
 		)
 	{
-		PRINTF("Failed to get ADL function pointers\n");
+		fmt::print(stderr, "Failed to get ADL function pointers\n");
 		return FALSE;
 	}
 
 	if (ADL_OK != ADL_Main_Control_Create(ADL_Main_Memory_Alloc, 1))
 	{
-		printf("Failed to initialize nested ADL2 context");
+		fmt::print(stderr, "Failed to initialize nested ADL2 context");
 		return ADL_ERR;
 	}
 
@@ -125,8 +121,6 @@ int initializeADL()
 
 void deinitializeADL()
 {
-
 	ADL_Main_Control_Destroy();
-
 	FreeLibrary(hDLL);
 }

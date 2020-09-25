@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 		int iNumberAdapters = 0;
 		if (ADL_OK != ADL_Adapter_NumberOfAdapters_Get(&iNumberAdapters))
 		{
-			PRINTF("Cannot get the number of adapters!\n");
+			fmt::print(stderr, "Cannot get the number of adapters!\n");
 			return 0;
 		}
 
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-				PRINTF("Failed to alloc AdapterInfo");
+				fmt::print(stderr, "Failed to alloc AdapterInfo");
 				return 0;
 			}			
 
@@ -40,8 +40,11 @@ int main(int argc, char* argv[])
 
 		result = PrintAllSupportedSensors(iNumberAdapters, lpAdapterInfo);
 
+		// adapter 3 is dGPU on msi laptop, sample is ms, duration is s
+		PMLogAllSensorStart(3, 100, 5, lpAdapterInfo);
 		
-		// cleanup
+
+		// **********************************************cleanup*********************************************
 		ADL_Main_Memory_Free((void**)&lpAdapterInfo);
 
 		deinitializeADL();
