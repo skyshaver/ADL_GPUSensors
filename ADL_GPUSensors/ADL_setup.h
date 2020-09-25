@@ -10,7 +10,7 @@
 #include "adl_defines.h"
 
 
-#include <stdio.h>
+#include <cstdio>
 
 // Comment out one of the two lines below to allow or supress diagnostic messages
 // #define PRINTF

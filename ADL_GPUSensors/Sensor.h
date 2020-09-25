@@ -521,3 +521,56 @@ int PMLogGfxClkStart(int adapterNumber, int sampleRate, int Duration, LPAdapterI
 
 	return ADL_OK;
 }
+
+
+int parseCLArgs(int argc, char** argv, int iNumberAdapters, LPAdapterInfo lpAdapterInfo)
+{
+	int result = 0;
+	if (argc >= 1)
+	{
+
+
+
+		switch (*(argv[1]))
+		{
+		case 'l':
+			result = PrintAllSupportedSensors(iNumberAdapters, lpAdapterInfo);
+			break;
+		case 's':
+			if (argc == 5)
+				PMLogAllSensorStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
+			else
+				printf("signature of PMLog all sensors (PMLog.exe s X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
+			break;
+		case 'm':
+			if (argc == 5)
+				PMLogMclkStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
+			else
+				printf("signature of PMLog MCLK sensor (PMLog.exe m X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
+			break;
+		case 'f':
+			if (argc == 5)
+				PMLogFanStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
+			else
+				printf("signature of PMLog fan sensor (PMLog.exe f X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
+			break;
+		case 'g':
+			if (argc == 5)
+				PMLogGfxClkStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
+			else
+				printf("signature of PMLog GFX clock sensor (PMLog.exe g X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
+			break;
+
+		default:
+			printf("Available command line parameters: l- List All sensors, s-start log all sensors, m-start log MCLK sensor, f-start fan sensor, g-start GFX clock sensor\n");
+
+			break;
+		}
+	}
+	else
+	{
+		printf("Available command line parameters: l- List All sensors, s-start log all sensors, m-start log MCLK sensor, f-start fan sensor, g-start GFX clock sensor\n");
+	}
+
+	return result;
+}

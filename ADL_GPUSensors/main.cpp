@@ -1,5 +1,7 @@
-#include <stdio.h>
 #include <tchar.h>
+
+#include <algorithm>
+#include <cstdio>
 #include <iostream>
 
 #include "Sensor.h"
@@ -8,74 +10,38 @@ int main(int argc, char* argv[])
 {
 	int result = 0;
 	LPAdapterInfo   lpAdapterInfo = nullptr;
+
 	if (initializeADL())
 	{
-
-		if (argc >= 1)
+		// Obtain the number of adapters for the system
+		int iNumberAdapters = 0;
+		if (ADL_OK != ADL_Adapter_NumberOfAdapters_Get(&iNumberAdapters))
 		{
-			// Obtain the number of adapters for the system
-			int iNumberAdapters = 0;
-			if (ADL_OK != ADL_Adapter_NumberOfAdapters_Get(&iNumberAdapters))
-			{
-				PRINTF("Cannot get the number of adapters!\n");
-				return 0;
-			}
-			
-			if (0 < iNumberAdapters)
-			{
-				// lpAdapterInfo is inititialized here but declareed in ADL_Setup and called in a # of functions in Sensor // fixed
-				
-				lpAdapterInfo = (LPAdapterInfo)malloc(sizeof(AdapterInfo) * iNumberAdapters);
-				memset(lpAdapterInfo, '\0', sizeof(AdapterInfo) * iNumberAdapters);
+			PRINTF("Cannot get the number of adapters!\n");
+			return 0;
+		}
 
-				// Get the AdapterInfo structure for all adapters in the system
+		// Get the AdapterInfo structure for all adapters in the system
+		if (iNumberAdapters > 0)
+		{
+			lpAdapterInfo = (LPAdapterInfo)malloc(sizeof(AdapterInfo) * iNumberAdapters);
+			if (lpAdapterInfo)
+			{
+				memset(lpAdapterInfo, '\0', sizeof(AdapterInfo) * iNumberAdapters);
 				ADL_Adapter_AdapterInfo_Get(lpAdapterInfo, sizeof(AdapterInfo) * iNumberAdapters);
 			}
-
-			result = PrintAllSupportedSensors(iNumberAdapters, lpAdapterInfo);
-
-
-			switch (*(argv[1]))
+			else
 			{
-			case 'l':
-				result = PrintAllSupportedSensors(iNumberAdapters, lpAdapterInfo);
-				break;
-			case 's':
-				if (argc == 5)
-					PMLogAllSensorStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
-				else
-					printf("signature of PMLog all sensors (PMLog.exe s X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
-				break;
-			case 'm':
-				if (argc == 5)
-					PMLogMclkStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
-				else
-					printf("signature of PMLog MCLK sensor (PMLog.exe m X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
-				break;
-			case 'f':
-				if (argc == 5)
-					PMLogFanStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
-				else
-					printf("signature of PMLog fan sensor (PMLog.exe f X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
-				break;
-			case 'g':
-				if (argc == 5)
-					PMLogGfxClkStart(atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), lpAdapterInfo);
-				else
-					printf("signature of PMLog GFX clock sensor (PMLog.exe g X Y Z); X - Adapter Number, Y - Sample Rate (ms), Z - Duration to Log");
-				break;
+				PRINTF("Failed to alloc AdapterInfo");
+				return 0;
+			}			
 
-			default:
-				printf("Available command line parameters: l- List All sensors, s-start log all sensors, m-start log MCLK sensor, f-start fan sensor, g-start GFX clock sensor\n");
-
-				break;
-			}
-		}
-		else
-		{
-			printf("Available command line parameters: l- List All sensors, s-start log all sensors, m-start log MCLK sensor, f-start fan sensor, g-start GFX clock sensor\n");
 		}
 
+		result = PrintAllSupportedSensors(iNumberAdapters, lpAdapterInfo);
+
+		
+		// cleanup
 		ADL_Main_Memory_Free((void**)&lpAdapterInfo);
 
 		deinitializeADL();
