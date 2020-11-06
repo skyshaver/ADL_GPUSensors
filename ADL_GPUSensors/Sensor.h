@@ -1,6 +1,11 @@
 #pragma once
 
+#include <chrono>
+#include <thread>
+
 #include "ADL_setup.h"
+
+using namespace std::literals;
 
 int PMLogDestroyD3DDevice(int adapterNumber, ADL_D3DKMT_HANDLE hDevice)
 {
@@ -183,11 +188,9 @@ int PrintAllSupportedSensors(int iNumberAdapters, LPAdapterInfo lpAdapterInfo)
 
 void DisplayPMLogOutput(ADLPMLogData* PMLogOutput, int Duration)
 {
-	struct timeb startTime, currentTime;
-	int diff;
 	int i;
-
-	ftime(&startTime);
+	auto start = std::chrono::steady_clock::now();
+	std::chrono::duration<double> elapsed_time;
 	system("cls");
 	do {
 		i = 0;
@@ -312,11 +315,10 @@ void DisplayPMLogOutput(ADLPMLogData* PMLogOutput, int Duration)
 			i++;
 		}
 
-		Sleep(500);
+		std::this_thread::sleep_for(500ms);
 		system("cls");
-		ftime(&currentTime);
-		diff = (int)(currentTime.time - startTime.time);
-	} while (diff < Duration);
+		elapsed_time = std::chrono::steady_clock::now() - start;
+	} while (elapsed_time.count() < Duration);
 }
 
 

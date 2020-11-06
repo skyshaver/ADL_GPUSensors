@@ -2,7 +2,6 @@
 
 
 #include <windows.h>
-#include <sys\timeb.h>
 #include <signal.h>
 
 #include "adl_sdk.h"
@@ -75,7 +74,7 @@ int initializeADL()
 		hDLL = LoadLibrary(TEXT("atiadlxy.dll"));
 	}
 
-	if (NULL == hDLL)
+	if (hDLL == NULL)
 	{
 		fmt::print(stderr, "Failed to load ADL library\n");
 		return FALSE;
@@ -116,7 +115,6 @@ int initializeADL()
 
 	return TRUE;
 }
-
 
 
 void deinitializeADL()

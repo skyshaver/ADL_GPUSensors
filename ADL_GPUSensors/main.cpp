@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 		PMLogAllSensorStart(3, 100, 5, lpAdapterInfo);
 		
 
-		// **********************************************cleanup*********************************************
+		// ********************************************** cleanup *********************************************
 		ADL_Main_Memory_Free((void**)&lpAdapterInfo);
 
 		deinitializeADL();
